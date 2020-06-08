@@ -8,8 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace ZulKris\Finder\MimeTypeGuesser;
 
-use ZulKris\Finder\MimeTypeGuesser\MimeTypeGuesserInterface;
+use ZulKris\Finder\Exceptions\AccessDeniedException;
+use ZulKris\Finder\Exceptions\FileNotFoundException;
 
 /**
  * Guesses the mime type with the binary "file" (only available on *nix).
@@ -62,8 +64,12 @@ class FileBinaryMimeTypeGuesser implements MimeTypeGuesserInterface
      */
     public function guess($path)
     {
-        if (!is_file($path) ||!is_readable($path) ) {
-            throw new \RuntimeException($path);
+        if (!is_file($path)) {
+            throw new FileNotFoundException($path);
+        }
+
+        if (!is_readable($path)) {
+            throw new AccessDeniedException($path);
         }
 
         if (!self::isSupported()) {
@@ -73,7 +79,7 @@ class FileBinaryMimeTypeGuesser implements MimeTypeGuesserInterface
         ob_start();
 
         // need to use --mime instead of -i. see #6641
-        passthru(sprintf($this->cmd, escapeshellarg((0 === strpos($path, '-') ? './' : '').$path)), $return);
+        passthru(sprintf($this->cmd, escapeshellarg((0 === strpos($path, '-') ? './' : '') . $path)), $return);
         if ($return > 0) {
             ob_end_clean();
 

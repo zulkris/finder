@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ZulKris\Finder\MimeTypeGuesser;
 
 /*
@@ -12,7 +11,9 @@ namespace ZulKris\Finder\MimeTypeGuesser;
  * file that was distributed with this source code.
  */
 
-namespace  ZulKris\Finder\MimeTypeGuesser;
+use ZulKris\Finder\Exceptions\AccessDeniedException;
+use ZulKris\Finder\Exceptions\FileNotFoundException;
+
 /**
  * A singleton mime type guesser.
  *
@@ -36,7 +37,7 @@ namespace  ZulKris\Finder\MimeTypeGuesser;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class MimeTypeGuesser
+class MimeTypeGuesser implements MimeTypeGuesserInterface
 {
     /**
      * The singleton instance.
@@ -87,6 +88,7 @@ class MimeTypeGuesser
      * Registers a new mime type guesser.
      *
      * When guessing, this guesser is preferred over previously registered ones.
+     * @param MimeTypeGuesserInterface $guesser
      */
     public function register(MimeTypeGuesserInterface $guesser)
     {
@@ -125,8 +127,15 @@ class MimeTypeGuesser
             }
         }
 
-        if (2 === \count($this->guessers) && !FileBinaryMimeTypeGuesser::isSupported() && !FileInfoMimeTypeGuesser::isSupported()) {
-            throw new \LogicException('Unable to guess the mime type as no guessers are available (Did you enable the php_fileinfo extension?).');
+        if (
+            2 === \count($this->guessers) &&
+            !FileBinaryMimeTypeGuesser::isSupported() &&
+            !FileInfoMimeTypeGuesser::isSupported()
+        ) {
+            throw new \LogicException(
+                'Unable to guess the mime type as no guessers are available' .
+                '(Did you enable the php_fileinfo extension?).'
+            );
         }
 
         return null;

@@ -1,0 +1,5 @@
+finder:
+  max_size_mb: 50
+  mime_types:
+    - 'text/plain'
+  stop_after_first: true

@@ -8,18 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace ZulKris\Finder\MimeTypeGuesser;
 
-namespace Symfony\Component\HttpFoundation\File\MimeType;
-
-use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use ZulKris\Finder\Exceptions\AccessDeniedException;
+use ZulKris\Finder\Exceptions\FileNotFoundException;
 
 /**
  * Guesses the mime type using the PECL extension FileInfo.
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface
+class FileInfoMimeTypeGuesser implements MimeTypeGuesserInterface
 {
     private $magicFile;
 

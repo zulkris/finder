@@ -1,0 +1,11 @@
+language: php
+php:
+  - '7.4'
+jobs:
+  include:
+    - stage: install libraries
+      script: make install
+    - stage: linter tests
+      script: make lint
+    - stage: unit tests
+      script: make test

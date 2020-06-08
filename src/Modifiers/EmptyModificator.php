@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace ZulKris\Finder\Modifiers;
 
-class EmptyModification implements ItemModificationInterface
+class EmptyModificator implements ItemModificatorInterface
 {
     public function modify($item): string
     {
