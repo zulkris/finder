@@ -56,14 +56,16 @@ final class Finder
             throw new \RuntimeException($mimeType . ' is not allowed Mime-Type, check settings');
         }
 
-        $streamContext = $this->finderSettings->getStreamContext() ?
-            stream_context_create($this->finderSettings->getStreamContext()) :
-            null;
-        $file = $fileInfo->openFile(
-            'r',
-            null,
-            $streamContext
-        );
+        if (null !== $streamContext = $this->finderSettings->getStreamContext()) {
+            $file = $fileInfo->openFile(
+                'r',
+                false,
+                stream_context_create($streamContext)
+            );
+        } else {
+            $file = $fileInfo->openFile();
+        }
+
         $file->rewind();
 
         $results = [];
