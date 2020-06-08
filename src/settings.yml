@@ -3,3 +3,4 @@ finder:
   mime_types:
     - 'text/plain'
   stop_after_first: true
+  stream_context_options: ~
